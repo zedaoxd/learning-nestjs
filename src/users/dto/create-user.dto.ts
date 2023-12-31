@@ -5,12 +5,14 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { EmailUnique } from '../validations/email-unique.validator';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: 'Name is required' })
   name: string;
 
   @IsEmail({}, { message: 'Email must be a valid email' })
+  @EmailUnique({})
   email: string;
 
   @MinLength(6, { message: 'Password must be at least 6 characters long' })

@@ -24,4 +24,8 @@ export class UserRepository {
   async findOne(id: string) {
     return this.users.find((user) => user.id === id);
   }
+
+  async existisByEmail(email: string): Promise<boolean> {
+    return !!this.users.find((user) => user.email === email);
+  }
 }
