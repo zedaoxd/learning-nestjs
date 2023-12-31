@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { randomUUID } from 'crypto';
+import { CreateProductDto } from './dto/create-products.dto';
 import { ProductsRepository } from './products.repository';
 
 @Controller('/products')
@@ -21,14 +21,7 @@ export class ProductsController {
   }
 
   @Post()
-  async create(@Body() dto: any) {
-    const newProduct = {
-      ...dto,
-      id: randomUUID(),
-    };
-
-    await this.repository.save(newProduct);
-
-    return newProduct;
+  async create(@Body() dto: CreateProductDto) {
+    return await this.repository.save(dto);
   }
 }

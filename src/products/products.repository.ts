@@ -1,28 +1,20 @@
 import { Injectable } from '@nestjs/common';
-
-type Characteristics = {
-  name: string;
-  description: string;
-};
-
-type Product = {
-  id?: string;
-  name: string;
-  value: number;
-  quntityAvailable: number;
-  description: string;
-  characteristics: Characteristics[];
-  category: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import { randomUUID } from 'crypto';
+import { CreateProductDto } from './dto/create-products.dto';
 
 @Injectable()
 export class ProductsRepository {
   private products = [];
 
-  async save(product: Product) {
-    this.products.push(product);
+  async save(product: CreateProductDto) {
+    const newProduct = {
+      ...product,
+      id: randomUUID(),
+    };
+
+    this.products.push(newProduct);
+
+    return newProduct;
   }
   async findAll() {
     return this.products;
