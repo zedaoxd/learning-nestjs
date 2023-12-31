@@ -7,5 +7,6 @@ import { EmailUniqueValidator } from './validations/email-unique.validator';
   imports: [],
   controllers: [UsersController],
   providers: [UserRepository, EmailUniqueValidator],
+  exports: [UserRepository],
 })
 export class UsersModule {}

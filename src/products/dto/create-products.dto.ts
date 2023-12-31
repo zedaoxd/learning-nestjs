@@ -5,10 +5,12 @@ import {
   IsNotEmpty,
   IsNumber,
   IsPositive,
+  IsUUID,
   MaxLength,
   ValidateNested,
 } from 'class-validator';
 
+import { UseridExists } from '../validations/user-existis.validator';
 import { CharacteristicsProductsDto } from './characteristics-products.dto';
 
 export class CreateProductDto {
@@ -58,4 +60,8 @@ export class CreateProductDto {
   @Type(() => CharacteristicsProductsDto)
   @ArrayMinSize(3, { message: 'Characteristics must have at least 3 items' })
   characteristics: CharacteristicsProductsDto[];
+
+  @IsUUID('all', { message: 'User UUID is invalid' })
+  @UseridExists({})
+  userUUID: string;
 }
