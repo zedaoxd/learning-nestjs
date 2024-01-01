@@ -24,8 +24,9 @@ export class UserRepository {
     return this.users;
   }
 
-  async findOne(id: string) {
-    return this.users.find((user) => user.id === id);
+  async findOne(id: string): Promise<UserEntity | undefined> {
+    const entity = this.users.find((user) => user.id === id);
+    return entity;
   }
 
   async existisByEmail(email: string): Promise<boolean> {
