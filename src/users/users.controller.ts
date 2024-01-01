@@ -1,13 +1,16 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
   Param,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FullUserDTO } from './dto/full-user.dto';
 import { SimpleUserDTO } from './dto/simple-user.dto';
@@ -65,5 +68,15 @@ export class UsersController {
       entity.created,
       entity.updated,
     );
+  }
+
+  @Delete('/:id')
+  async delete(@Param('id') id: string, @Res() response: Response) {
+    const entity = await this.userRepository.delete(id);
+
+    if (!entity)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    return response.sendStatus(HttpStatus.NO_CONTENT);
   }
 }

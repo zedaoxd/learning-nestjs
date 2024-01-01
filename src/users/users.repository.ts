@@ -52,4 +52,15 @@ export class UserRepository {
 
     return updatedEntity;
   }
+
+  async delete(id: string): Promise<UserEntity | undefined> {
+    const entity = await this.findOne(id);
+
+    if (!entity) return undefined;
+
+    const index = this.users.findIndex((user) => user.id === id);
+    this.users.splice(index, 1);
+
+    return entity;
+  }
 }
