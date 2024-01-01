@@ -32,4 +32,24 @@ export class UserRepository {
   async existisByEmail(email: string): Promise<boolean> {
     return !!this.users.find((user) => user.email === email);
   }
+
+  async update(
+    id: string,
+    user: Partial<UserEntity>,
+  ): Promise<UserEntity | undefined> {
+    const entity = await this.findOne(id);
+
+    if (!entity) return undefined;
+
+    const updatedEntity = {
+      ...entity,
+      ...user,
+      updated: new Date(),
+    };
+
+    const index = this.users.findIndex((user) => user.id === id);
+    this.users[index] = updatedEntity;
+
+    return updatedEntity;
+  }
 }

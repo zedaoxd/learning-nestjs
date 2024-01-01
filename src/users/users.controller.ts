@@ -6,10 +6,12 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FullUserDTO } from './dto/full-user.dto';
 import { SimpleUserDTO } from './dto/simple-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './users.repository';
 
 @Controller('/users')
@@ -36,6 +38,22 @@ export class UsersController {
   @Get('/:id')
   async findOne(@Param('id') id: string) {
     const entity = await this.userRepository.findOne(id);
+
+    if (!entity)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    return new FullUserDTO(
+      entity.id,
+      entity.email,
+      entity.name,
+      entity.created,
+      entity.updated,
+    );
+  }
+
+  @Put('/:id')
+  async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+    const entity = await this.userRepository.update(id, dto);
 
     if (!entity)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
