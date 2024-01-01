@@ -4,6 +4,7 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsUUID,
   MaxLength,
@@ -14,10 +15,12 @@ import { UUID } from 'crypto';
 import { UseridExists } from '../validations/user-existis.validator';
 import { CharacteristicsProductsDTO } from './characteristics-products.dto';
 
-export class CreateProductDto {
+export class UpdateProductDto {
   @IsNotEmpty({ message: 'Name is required' })
+  @IsOptional()
   name: string;
 
+  @IsOptional()
   @IsNotEmpty({ message: 'Price is required' })
   @IsNumber(
     {
@@ -40,6 +43,7 @@ export class CreateProductDto {
     { message: 'Quantity must be an integer' },
   )
   @IsPositive({ message: 'Quantity must be a positive number' })
+  @IsOptional()
   availableQuantity: number;
 
   @IsNotEmpty({ message: 'Description is required' })
@@ -47,6 +51,7 @@ export class CreateProductDto {
     message:
       'Description must be shorter than or equal to $constraint1 characters',
   })
+  @IsOptional()
   description: string;
 
   @IsNotEmpty({ message: 'Category is required' })
@@ -54,15 +59,18 @@ export class CreateProductDto {
     message:
       'Category must be shorter than or equal to $constraint1 characters',
   })
+  @IsOptional()
   category: string;
 
   @IsArray({ message: 'Characteristics must be an array' })
   @ValidateNested({ each: true })
   @Type(() => CharacteristicsProductsDTO)
   @ArrayMinSize(3, { message: 'Characteristics must have at least 3 items' })
+  @IsOptional()
   characteristics: CharacteristicsProductsDTO[];
 
   @IsUUID('all', { message: 'User UUID is invalid' })
   @UseridExists({})
+  @IsOptional()
   userUUID: UUID;
 }
