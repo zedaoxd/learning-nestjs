@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserEntity } from './users.entity';
 
 @Injectable()
 export class UserRepository {
-  private users = [];
+  private users: UserEntity[] = [];
 
   async save(user: CreateUserDto) {
-    const newUser = {
+    const newUser: UserEntity = {
       ...user,
       id: randomUUID(),
+      created: new Date(),
+      updated: new Date(),
     };
 
     this.users.push(newUser);
